@@ -87,9 +87,17 @@ def parse_args():
 
     return in_path, out_path, in_ext, out_ext
 
+LOADERS = {'.json': load_json, '.yml': load_yaml, '.yaml': load_yaml, '.xml': load_xml}
+SAVERS  = {'.json': save_json, '.yml': save_yaml, '.yaml': save_yaml, '.xml': save_xml}
 def main():
     in_path, out_path, in_ext, out_ext = parse_args()
-    print(f"Wejście: {in_path} ({in_ext}) ---> Wyjście: {out_path} ({out_ext})")
+    data = LOADERS[in_ext](in_path)
+    try:
+        SAVERS[out_ext](data, out_path)
+    except Exception as e:
+        print(f"Błąd zapisu: {e}")
+        sys.exit(1)
+    print(f"Konwersja zakończona: {in_path} -> {out_path}")
 
 if __name__ == '__main__':
     main()
