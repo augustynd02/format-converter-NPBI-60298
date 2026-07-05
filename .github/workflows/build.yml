@@ -1,0 +1,34 @@
+name: Build EXE Converter
+
+on:
+  push:
+    branches: [ master ]
+  schedule:
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        shell: powershell
+        run: ./installResources.ps1
+
+      - name: Build exe
+        shell: powershell
+        run: pyinstaller --onefile main.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: converter-exe
+          path: dist/main.exe
