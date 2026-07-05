@@ -10,6 +10,10 @@ def load_json(path):
             print(f"Błąd składni JSON: {e}")
             sys.exit(1)
 
+def save_json(data, path):
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
 def parse_args():
     if len(sys.argv) != 3:
         print("Użycie: program.exe plikWejsciowy.x plikWyjsciowy.y")
