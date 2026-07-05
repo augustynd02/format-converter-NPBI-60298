@@ -11,6 +11,10 @@ def load_yaml(path):
             print(f"Błąd składni YAML: {e}")
             sys.exit(1)
 
+def save_yaml(data, path):
+    with open(path, 'w', encoding='utf-8') as f:
+        yaml.safe_dump(data, f, allow_unicode=True)
+
 def load_json(path):
     with open(path, encoding='utf-8') as f:
         try:
