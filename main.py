@@ -1,6 +1,15 @@
 import sys
 import os
 import json
+import yaml
+
+def load_yaml(path):
+    with open(path, encoding='utf-8') as f:
+        try:
+            return yaml.safe_load(f)
+        except yaml.YAMLError as e:
+            print(f"Błąd składni YAML: {e}")
+            sys.exit(1)
 
 def load_json(path):
     with open(path, encoding='utf-8') as f:
