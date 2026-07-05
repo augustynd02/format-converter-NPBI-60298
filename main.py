@@ -13,6 +13,24 @@ def xml_to_dict(elem):
         result[child.tag] = xml_to_dict(child)
     return result
 
+def dict_to_xml(tag, d):
+    elem = ET.Element(tag)
+    if isinstance(d, dict):
+        for k, v in d.items():
+            elem.append(dict_to_xml(k, v))
+    elif isinstance(d, list):
+        for item in d:
+            elem.append(dict_to_xml("item", item))
+    else:
+        elem.text = str(d)
+    return elem
+
+def save_xml(data, path):
+    root = dict_to_xml("root", data)
+    tree = ET.ElementTree(root)
+    ET.indent(tree, space="  ")
+    tree.write(path, encoding='utf-8', xml_declaration=True)
+
 def load_xml(path):
     try:
         tree = ET.parse(path)
