@@ -2,6 +2,24 @@ import sys
 import os
 import json
 import yaml
+import xml.etree.ElementTree as ET
+
+def xml_to_dict(elem):
+    children = list(elem)
+    if not children:
+        return elem.text
+    result = {}
+    for child in children:
+        result[child.tag] = xml_to_dict(child)
+    return result
+
+def load_xml(path):
+    try:
+        tree = ET.parse(path)
+    except ET.ParseError as e:
+        print(f"Błąd składni XML: {e}")
+        sys.exit(1)
+    return xml_to_dict(tree.getroot())
 
 def load_yaml(path):
     with open(path, encoding='utf-8') as f:
