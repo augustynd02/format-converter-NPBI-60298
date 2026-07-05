@@ -1,5 +1,14 @@
 import sys
 import os
+import json
+
+def load_json(path):
+    with open(path, encoding='utf-8') as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError as e:
+            print(f"Błąd składni JSON: {e}")
+            sys.exit(1)
 
 def parse_args():
     if len(sys.argv) != 3:
